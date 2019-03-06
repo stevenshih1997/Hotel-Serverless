@@ -1,0 +1,17 @@
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+secret.tfvars
+
+# Directories
+.terraform/
+.vagrant/
+
+# SSH Keys
+*.pem
+
+# Backup files
+*.bak
+
+# Ignored Terraform files
+*gitignore*.tf
