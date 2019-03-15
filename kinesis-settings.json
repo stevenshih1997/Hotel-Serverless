@@ -1,0 +1,20 @@
+{
+  "Name": "KinesisStreamProcessor",
+  "Input": {
+         "KinesisVideoStream": {
+                "Arn": "arn:aws:kinesisvideo:us-east-1:397984152187:stream/HotelAPISecurityCamera/1552615234809"
+         }
+  },
+  "Output": {
+         "KinesisDataStream": {
+                "Arn": "arn:aws:kinesis:us-east-1:397984152187:stream/HotelAPIVideo-Stream"
+         }
+  },
+  "RoleArn": "arn:aws:iam::397984152187:role/HotelVideoStack-RekognitionVideoIAM-V89B24LLL0AL",
+  "Settings": {
+         "FaceSearch": {
+                "CollectionId": "hotelApiCollection",
+                "FaceMatchThreshold": 85.5
+         }
+  }
+}

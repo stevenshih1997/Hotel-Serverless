@@ -1,0 +1,9 @@
+language: go
+sudo: false
+before_script:
+  - cd ./src && go vet ./...
+go:
+  - 1.11.x
+  - master
+
+scripts:

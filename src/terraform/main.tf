@@ -1,7 +1,8 @@
 resource "aws_s3_bucket" "lambda_bucket" {
   bucket = "${var.aws_bucket_name}"
 
-  force_destroy = true
+  #Enable when destroying all infrastructure
+  #force_destroy = true
 }
 
 resource "aws_lambda_function" "hotel_lambda_function" {
@@ -18,6 +19,16 @@ resource "aws_lambda_function" "hotel_lambda_function" {
   runtime = "go1.x"
 
   role = "${aws_iam_role.lambda_exec.arn}"
+}
+
+resource "aws_cloudformation_stack" "HotelVideoStack" {
+  name = "HotelVideoStack"
+  parameters {
+    ApplicationName = "HotelAPIVideo"
+    EmailAddress = "stevenshih1997@gmail.com"
+  }
+  capabilities = ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
+  template_body = "${file("./CloudFormation/deploy.yaml")}"
 }
 
 module "gateway" {

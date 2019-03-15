@@ -20,6 +20,30 @@ resource "aws_iam_role" "lambda_exec" {
 }
 EOF
 }
+
+
+# resource "aws_iam_policy" "write_policy" {
+#   name        = "hotel-api-stream-write-policy"
+#   description = "Policy allowing put record/records to a Kinesis Stream"
+
+#   policy = <<EOF
+# {
+#     "Version": "2012-10-17",
+#     "Statement": [
+#         {
+#             "Effect": "Allow",
+#             "Action": [
+#                 "kinesis:PutRecord",
+#                 "kinesis:PutRecords"
+#             ],
+#             "Resource": [
+#                 "arn:aws:kinesis:${var.region}:${data.aws_caller_identity.current.account_id}:stream/hotel-api-stream"
+#             ]
+#         }
+#     ]
+# }
+# EOF
+# }
 resource "aws_iam_policy" "lambda_logging" {
   name = "lambda_logging"
   path = "/"
@@ -42,6 +66,12 @@ resource "aws_iam_policy" "lambda_logging" {
 }
 EOF
 }
+
+
+# resource "aws_iam_role_policy_attachment" "kinesis_video_stream_write_policy" {
+#   role = "${aws_iam_role.lambda_exec.name}"
+#   policy_arn = "${aws_iam_policy.kinesis_video.arn}"
+# }
 
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
   role = "${aws_iam_role.lambda_exec.name}"

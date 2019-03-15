@@ -6,3 +6,18 @@ output "base_url" {
 output "uploaded_bucket_name" {
   value = "${aws_s3_bucket.lambda_bucket.id}"
 }
+
+# output "secret" {
+#   value = "${aws_iam_access_key.rpi_producer.secret}"
+# }
+
+output "KinesisDataStreamArn" {
+    value = "${aws_cloudformation_stack.HotelVideoStack.outputs["KinesisDataStreamArn"]}"
+    description = "Kinesis Data Stream Arn (used in Stream Processer Input)"
+}
+
+
+output "RekognitionVideoIAM" {
+  value = "${aws_cloudformation_stack.HotelVideoStack.outputs["RekognitionVideoIAM"]}"
+  description = "Rekognition Video Processing IAM Arn (used in Stream Processer Input)"
+}

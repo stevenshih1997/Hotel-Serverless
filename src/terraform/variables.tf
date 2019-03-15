@@ -1,16 +1,15 @@
 # Provider Config
 provider "aws" {
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
   region     = "${var.region}"
+  shared_credentials_file = "/Users/stevenshih/.aws/credentials"
 }
-variable "access_key" {}
-variable "secret_key" {}
 variable "region" {
   default = "us-east-1"
 }
 
 variable "aws_bucket_name" {}
+
+variable "lambda_function_name" {}
 
 # App Config
 variable "app_version" {}
