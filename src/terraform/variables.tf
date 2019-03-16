@@ -13,3 +13,7 @@ variable "lambda_function_name" {}
 
 # App Config
 variable "app_version" {}
+
+# Kinesis stream and rekognition stream status
+
+variable "kinesis_rekognition_delete" {}

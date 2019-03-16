@@ -62,6 +62,13 @@ Resources:
                 Action:
                     - 'kinesis:ListStreams'
                 Resource: '*'
+              - 
+                Effect: Allow
+                Action:
+                    - 'logs:CreateLogGroup'
+                    - 'logs:CreateLogStream'
+                    - 'logs:PutLogEvents'
+                Resource: 'arn:aws:logs:*:*:*' 
 
   RekognitionVideoIAM:
     Type: AWS::IAM::Role

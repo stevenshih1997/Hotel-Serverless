@@ -19,7 +19,20 @@ update:
 .PHONY: update
 
 apply:
-				cd ./terraform && terraform apply -var="app_version=${VERSION}" 
+				cd ./terraform && terraform apply -var="app_version=${VERSION}" -var="kinesis_rekognition_delete=false"
+
+.PHONY: apply
+
+streamdown:
+				cd ./terraform && terraform apply -var="app_version=${VERSION}" -var="kinesis_rekognition_delete=true"
+
+.PHONY: streamdown
+
+destroy:
+				make streamdown
+				cd ./terraform && terraform destroy -var="app_version=${VERSION}"
+
+.PHONY: destroy
 
 compile:
 				make check

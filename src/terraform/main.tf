@@ -1,15 +1,15 @@
-resource "aws_s3_bucket" "lambda_bucket" {
-  bucket = "${var.aws_bucket_name}"
+# resource "aws_s3_bucket" "lambda_bucket" {
+#   bucket = "${var.aws_bucket_name}"
 
-  #Enable when destroying all infrastructure
-  #force_destroy = true
-}
+#   #Enable when destroying all infrastructure
+#   force_destroy = true
+# }
 
 resource "aws_lambda_function" "hotel_lambda_function" {
   function_name = "${var.lambda_function_name}"
   #filename = "main.zip"
   # The bucket name as created earlier with "aws s3api create-bucket"
-  s3_bucket = "${aws_s3_bucket.lambda_bucket.id}"
+  s3_bucket = "${var.aws_bucket_name}"
   s3_key    = "v${var.app_version}/main.zip"
 
   # "main" is the filename within the zip file (main.js) and "handler"
@@ -29,6 +29,27 @@ resource "aws_cloudformation_stack" "HotelVideoStack" {
   }
   capabilities = ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
   template_body = "${file("./CloudFormation/deploy.yaml")}"
+}
+
+module "kinesis" {
+  source = "./modules/kinesis"
+  stream_name = "HotelSecurityStream"
+  data_retention = "2"
+  delete = "${var.kinesis_rekognition_delete}"
+}
+
+module "stream-processor" {
+  source = "./modules/stream-processor"
+  aws_region = "${var.region}"
+  kinesis_stream_arn = "${chomp(module.kinesis.kinesis-aws-cli-output)}"
+  kinesis_data_stream_arn = "${aws_cloudformation_stack.HotelVideoStack.outputs["KinesisDataStreamArn"]}"
+  rekognition_role_arn = "${aws_cloudformation_stack.HotelVideoStack.outputs["RekognitionVideoIAM"]}"
+  stream_processor_name = "HotelRekognitionStreamProcessor"
+  face_collection_id = "hotelApiCollection"
+
+  delete = "${var.kinesis_rekognition_delete}"
+  
+  #depends_on = ["module.kinesis", "aws_cloudformation_stack.HotelVideoStack"]
 }
 
 module "gateway" {
