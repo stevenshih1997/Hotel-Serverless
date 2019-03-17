@@ -6,6 +6,7 @@
   - To spin up kinesis instances after they are down, run `make apply VERSION=1.0.0`
   - After `make destroy` is run, a new raspberry pi id and secret must be copied over and `source ~/.bashrc` must be run
     - Additionally, SNS email must be reconfirmed/resubscribed
+    - Also remember to change URL in Google Cloud server after destroying infrastructure
 
 # Dependencies
   - aws cli
