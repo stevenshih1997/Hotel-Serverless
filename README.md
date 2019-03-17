@@ -8,6 +8,9 @@
     - Additionally, SNS email must be reconfirmed/resubscribed
     - Also remember to change URL in Google Cloud server after destroying infrastructure
 
+# Infrastructure Diagram
+![AWS Infrastructure](assets/architecture.png?raw=true "AWS Infrastructure")
+
 # Dependencies
   - aws cli
   - jq
