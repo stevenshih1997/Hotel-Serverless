@@ -4,8 +4,8 @@ check:
 .PHONY: check
 
 build:
-				GOOS=linux GOARCH=amd64 go build -o main main.go
-				zip main.zip main
+				zip main.zip index.js
+
 .PHONY: build
 
 upload:
@@ -30,7 +30,7 @@ streamdown:
 
 destroy:
 				make streamdown
-				cd ./terraform && terraform destroy -var="app_version=${VERSION}"
+				cd ./terraform && terraform destroy -var="app_version=${VERSION}" -var="kinesis_rekognition_delete=false"
 
 .PHONY: destroy
 

@@ -6,7 +6,7 @@ Parameters:
     Type: String
     Default: RekognitionVideoStream
   EmailAddress:
-    Description: Email address used for SNS notification whenever people are found in video
+    Description: Admin email address used for SNS notification whenever people are found in video
     Type: String
 
 Resources:
@@ -48,7 +48,8 @@ Resources:
                 Effect: Allow
                 Action:
                     - 'sns:Publish'
-                Resource: !Ref SNSTopic
+                    - 'sns:Subscribe'
+                Resource: '*'
               -
                 Effect: Allow
                 Action:
@@ -135,3 +136,11 @@ Outputs:
   RekognitionVideoIAM:
     Description: Rekognition Video Processing IAM Arn (used in Stream Processer Input)
     Value: !GetAtt RekognitionVideoIAM.Arn
+  
+  SNSPublishRoleArn:
+    Description: SNS Pub Role Arn (used for lambda function with API gateway to subscribe users)
+    Value: !GetAtt SNSPublishRole.Arn
+  
+  SNSTopicArn:
+    Description: SNS Topic Arn for use in SNS user subscriptions
+    Value: !Ref SNSTopic

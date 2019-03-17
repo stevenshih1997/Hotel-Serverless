@@ -2,7 +2,7 @@
   "Name": "KinesisStreamProcessor",
   "Input": {
          "KinesisVideoStream": {
-                "Arn": "arn:aws:kinesisvideo:us-east-1:397984152187:stream/HotelAPISecurityCamera/1552615234809"
+                "Arn": "arn:aws:kinesisvideo:us-east-1:397984152187:stream/HotelSecurityStream/1552674155145"
          }
   },
   "Output": {

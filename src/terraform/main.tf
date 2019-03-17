@@ -15,10 +15,19 @@ resource "aws_lambda_function" "hotel_lambda_function" {
   # "main" is the filename within the zip file (main.js) and "handler"
   # is the name of the property under which the handler function was
   # exported in that file.
-  handler = "main"
-  runtime = "go1.x"
+  handler = "index.handler"
+  runtime = "nodejs8.10"
 
-  role = "${aws_iam_role.lambda_exec.arn}"
+  environment {
+    variables = {
+      sns = "${aws_cloudformation_stack.HotelVideoStack.outputs["SNSTopicArn"]}"
+    }
+  }
+
+  #role = "${aws_iam_role.lambda_exec.arn}"
+  # New role from cloudformation_stack allows access to SNS
+  role = "${aws_cloudformation_stack.HotelVideoStack.outputs["SNSPublishRoleArn"]}"
+  depends_on = ["aws_cloudformation_stack.HotelVideoStack"]
 }
 
 resource "aws_cloudformation_stack" "HotelVideoStack" {
