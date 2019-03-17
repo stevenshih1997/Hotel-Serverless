@@ -1,8 +1,9 @@
 # Provider Config
 provider "aws" {
-  region     = "${var.region}"
+  region                  = "${var.region}"
   shared_credentials_file = "/Users/stevenshih/.aws/credentials"
 }
+
 variable "region" {
   default = "us-east-1"
 }
