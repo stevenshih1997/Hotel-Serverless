@@ -1,20 +1,12 @@
-# resource "aws_s3_bucket" "lambda_bucket" {
-#   bucket = "${var.aws_bucket_name}"
-
-#   #Enable when destroying all infrastructure
-#   force_destroy = true
-# }
-
 resource "aws_lambda_function" "hotel_lambda_function" {
   function_name = "${var.lambda_function_name}"
 
-  #filename = "main.zip"
   # The bucket name as created earlier with "aws s3api create-bucket"
   s3_bucket = "${var.aws_bucket_name}"
 
   s3_key = "v${var.app_version}/main.zip"
 
-  # "main" is the filename within the zip file (main.js) and "handler"
+  # "index" is the filename within the zip file (index.js) and "handler"
   # is the name of the property under which the handler function was
   # exported in that file.
   handler = "index.handler"
@@ -35,11 +27,11 @@ resource "aws_lambda_function" "hotel_lambda_function" {
 }
 
 resource "aws_cloudformation_stack" "HotelVideoStack" {
-  name = "HotelVideoStack"
+  name = "${var.cloudformation_stack_name}"
 
   parameters {
-    ApplicationName = "HotelAPIVideo"
-    EmailAddress    = "stevenshih1997@gmail.com"
+    ApplicationName = "${var.cloudformation_stack_appname}"
+    EmailAddress    = "${var.cloudformation_stack_email}"
   }
 
   capabilities  = ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
@@ -48,8 +40,8 @@ resource "aws_cloudformation_stack" "HotelVideoStack" {
 
 module "kinesis" {
   source         = "./modules/kinesis"
-  stream_name    = "HotelSecurityStream"
-  data_retention = "2"
+  stream_name    = "${var.kinesis_name}"
+  data_retention = "0"
   delete         = "${var.kinesis_rekognition_delete}"
 }
 
@@ -59,17 +51,15 @@ module "stream-processor" {
   kinesis_stream_arn      = "${chomp(module.kinesis.kinesis-aws-cli-output)}"
   kinesis_data_stream_arn = "${aws_cloudformation_stack.HotelVideoStack.outputs["KinesisDataStreamArn"]}"
   rekognition_role_arn    = "${aws_cloudformation_stack.HotelVideoStack.outputs["RekognitionVideoIAM"]}"
-  stream_processor_name   = "HotelRekognitionStreamProcessor"
-  face_collection_id      = "hotelApiCollection"
+  stream_processor_name   = "${var.stream_processor_name}"
+  face_collection_id      = "${var.face_collection_id}"
 
   delete = "${var.kinesis_rekognition_delete}"
-
-  #depends_on = ["module.kinesis", "aws_cloudformation_stack.HotelVideoStack"]
 }
 
 module "gateway" {
   source            = "./modules/gateway"
-  namespace         = "hotel_api_gateway"
+  namespace         = "${var.gateway_name}"
   lambda_invoke_arn = "${aws_lambda_function.hotel_lambda_function.invoke_arn}"
 }
 

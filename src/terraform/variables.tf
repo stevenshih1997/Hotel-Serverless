@@ -18,3 +18,17 @@ variable "app_version" {}
 # Kinesis stream and rekognition stream status
 
 variable "kinesis_rekognition_delete" {}
+
+variable "cloudformation_stack_name" {}
+
+variable "cloudformation_stack_appname" {}
+
+variable "cloudformation_stack_email" {}
+
+variable "kinesis_name" {}
+
+variable "gateway_name" {}
+
+variable "stream_processor_name" {}
+
+variable "face_collection_id" {}

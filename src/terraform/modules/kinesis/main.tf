@@ -36,12 +36,8 @@ data "template_file" "kinesis-stream-id" {
 
 data "local_file" "create-kinesis-stream" {
   filename = "${data.template_file.kinesis_log_name.rendered}"
-
-  #depends_on = ["null_resource.create-kinesis-stream"]
 }
 
 data "local_file" "describe-kinesis-stream" {
   filename = "${data.template_file.kinesis-stream-id.rendered}"
-
-  #depends_on = ["null_resource.describe-stream"]
 }
