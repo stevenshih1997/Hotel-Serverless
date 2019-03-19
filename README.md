@@ -20,7 +20,8 @@
   - aws s3api create-bucket --bucket=terraform-serverless-hotel-lambda --region=us-east-1 // Only run once for creating bucket
   - aws s3 cp main.zip s3://terraform-serverless-hotel-lambda/v1.0.0/main.zip
   - ASSUMPTION: AWS s3 buckets are already created
-  - `Terraform refresh -update` to fix errors with loading modules
+  - `terraform refresh -update` to fix errors with loading modules
+  - Utilize `terraform plan` and `terraform plan -destroy` to check before actually applying
 
 ## AWS Rekognition
 ### Create Rekognition Collection
