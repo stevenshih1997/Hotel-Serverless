@@ -28,9 +28,9 @@
   - `aws rekognition create-collection --collection-id hotelApiCollection --region us-east-1`
   - `aws rekognition list-collections`
     - CollectionArn: aws:rekognition:us-east-1:397984152187:collection/hotelApiCollection
-### Add face you want stream to look for
+### Add face you want stream to look for (already in s3 bucket)
   - `aws s3api create-bucket --bucket=hotel-api-faces --region=us-east-1`
-  - `aws rekognition index-faces --image '{"S3Object":{"Bucket":"hotel-api-faces", "Name": "steven_shih.jpg"}}' --collection-id "hotelApiCollection" --detection-attributes "ALL" --external-image-id "steven_shih" --region us-east-1`
+  - `aws rekognition index-faces --image '{"S3Object":{"Bucket":"hotel-api-faces", "Name": "<image-name>.jpg"}}' --collection-id "hotelApiCollection" --detection-attributes "ALL" --external-image-id "<image name without extension>" --region us-east-1`
 ### Create Rekognition Stream Processor
   - Kinesis Stream Name: HotelSecurityStream
   - `aws rekognition create-stream-processor --region us-east-1 --cli-input-json file://kinesis-settings.json`
