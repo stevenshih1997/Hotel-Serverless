@@ -25,6 +25,8 @@ Resources:
         -
           Endpoint: !Sub ${EmailAddress}
           Protocol: email
+        # - Endpoint: !GetAtt RekognitionVideoLambda.Arn # Subscribe hotelLambda to sns topic
+        #   Protocol: lambda
 
   SNSPublishRole:
     Type: AWS::IAM::Role
@@ -119,6 +121,15 @@ Resources:
       Runtime: "nodejs6.10"
       Timeout: "120"
 
+# Invoke permission for SNS topic to invoke lambda
+  # RekognitionVideoLambdaPermission:
+  #   Type: "AWS::Lambda::Permission"
+  #   Properties:
+  #     FunctionName: !GetAtt RekognitionVideoLambda.Arn
+  #     Action: "lambda:InvokeFunction"
+  #     Principal: sns.amazonaws.com
+  #     SourceArn: !Ref SNSTopic.Arn
+
   RekognitionLambdaKinesisMapping:
     Type: "AWS::Lambda::EventSourceMapping"
     Properties: 
@@ -126,7 +137,7 @@ Resources:
       Enabled: true
       EventSourceArn: !GetAtt EventMetadataStream.Arn
       FunctionName: !GetAtt  RekognitionVideoLambda.Arn
-      StartingPosition: "TRIM_HORIZON"
+      StartingPosition: "LATEST"
 
 Outputs:
   KinesisDataStreamArn:

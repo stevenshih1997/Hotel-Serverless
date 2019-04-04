@@ -35,11 +35,12 @@ resource "aws_cloudformation_stack" "HotelVideoStack" {
   }
 
   capabilities  = ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"]
+  # Allow SNS to invoke hotelLambda function
   template_body = "${file("./CloudFormation/deploy.yaml")}"
 }
 
 module "kinesis" {
-  source         = "./modules/kinesis"
+  source         = "./modules/kinesisvideo"
   stream_name    = "${var.kinesis_name}"
   data_retention = "0"
   delete         = "${var.kinesis_rekognition_delete}"
@@ -63,6 +64,7 @@ module "gateway" {
   lambda_invoke_arn = "${aws_lambda_function.hotel_lambda_function.invoke_arn}"
 }
 
+# Creates Lambda permission to allow external souce (API Gateway) to invoke this function
 resource "aws_lambda_permission" "apigw" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"

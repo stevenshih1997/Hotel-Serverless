@@ -74,6 +74,11 @@ destroy:
 
 .PHONY: destroy
 
+status:
+				cd ./terraform && terraform state list
+
+.PHONY: status
+
 # COMMAND FOR ADDING FACE TO REKOGNITION DATABASE
 addface:
 				# Put image under assets/faces

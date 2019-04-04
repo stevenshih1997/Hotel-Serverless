@@ -1,11 +1,11 @@
 {
     "StreamInfo": {
         "StreamName": "HotelSecurityStream",
-        "StreamARN": "arn:aws:kinesisvideo:us-east-1:397984152187:stream/HotelSecurityStream/1552938786375",
+        "StreamARN": "arn:aws:kinesisvideo:us-east-1:397984152187:stream/HotelSecurityStream/1553647964197",
         "KmsKeyId": "arn:aws:kms:us-east-1:397984152187:alias/aws/kinesisvideo",
-        "Version": "WBzGORIcvfn5TZrZ8cCr",
+        "Version": "hJD7IqJ0qVLOnSM4PZ5H",
         "Status": "ACTIVE",
-        "CreationTime": 1552938786.375,
+        "CreationTime": 1553647964.197,
         "DataRetentionInHours": 0
     }
 }

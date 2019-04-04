@@ -4,13 +4,21 @@
   - `make destroy VERSION=1.0.0` to destroy all instances
   - To only spin down the kinesis instances, run `make streamdown VERSION=1.0.0`
   - To spin up kinesis instances after they are down, run `make apply VERSION=1.0.0`
-  - After `make destroy` is run, a new raspberry pi id and secret must be copied over and `source ~/.bashrc` must be run
+
+# Additional notes
+  - If there are errors with `make apply` and `terraform init`, run `terraform get -update`
+  - After `make destroy` is run:
+    - a new raspberry pi id and secret must be copied over and `source ~/.bashrc` must be run
     - Additionally, SNS email must be reconfirmed/resubscribed
     - Also remember to change URL in Google Cloud server after destroying infrastructure
+    - If camera is unplugged, run `ls /dev/video*` if "No such file or directory" appears, run `vcgencmd get_camera` and then `sudo modprobe bcm2835-v4l2`. Check `ls /dev/video*`, and the output should be `/dev/video0`.
+  - Remember to enable 'VideoStackLambda' function to consume kinesis data stream if initially disabled (due to saving credits).
 
 # Infrastructure Diagram
 ![AWS Infrastructure](src/assets/architecture.png?raw=true "AWS Infrastructure")
 
+# Overall Infrastructure Diagram
+![Overall Infrastructure](src/assets/hotelArchitecture.png?raw=true "Overall Infrastructure")
 # Dependencies
   - aws cli
   - jq

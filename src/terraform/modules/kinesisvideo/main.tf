@@ -1,4 +1,4 @@
-resource "null_resource" "create-kinesis-stream" {
+resource "null_resource" "create-kinesisvideo-stream" {
   count = "${var.delete != "false" ? 0 : 1}"
 
   provisioner "local-exec" {
@@ -11,17 +11,17 @@ resource "null_resource" "describe-stream" {
     command = "aws kinesisvideo describe-stream --stream-name ${var.stream_name} > ${data.template_file.kinesis-stream-id.rendered}"
   }
 
-  depends_on = ["null_resource.create-kinesis-stream"]
+  depends_on = ["null_resource.create-kinesisvideo-stream"]
 }
 
-resource "null_resource" "delete-kinesis-stream" {
+resource "null_resource" "delete-kinesisvideo-stream" {
   count = "${var.delete != "false" ? 1 : 0}"
 
   provisioner "local-exec" {
-    command = "aws kinesisvideo delete-stream --stream-arn ${trimspace(data.local_file.create-kinesis-stream.content)}" #" > ${data.template_file.kinesis_log_name.rendered}"
+    command = "aws kinesisvideo delete-stream --stream-arn ${trimspace(data.local_file.create-kinesisvideo-stream.content)}" #" > ${data.template_file.kinesis_log_name.rendered}"
   }
 
-  depends_on = ["null_resource.create-kinesis-stream"]
+  depends_on = ["null_resource.create-kinesisvideo-stream"]
 }
 
 #-------------------------------------------------------------------------------------
@@ -33,11 +33,10 @@ data "template_file" "kinesis_log_name" {
 data "template_file" "kinesis-stream-id" {
   template = "${path.module}/id.log"
 }
-
-data "local_file" "create-kinesis-stream" {
+data "local_file" "create-kinesisvideo-stream" {
   filename = "${data.template_file.kinesis_log_name.rendered}"
 }
 
-data "local_file" "describe-kinesis-stream" {
+data "local_file" "delete-kinesisvideo-stream" {
   filename = "${data.template_file.kinesis-stream-id.rendered}"
 }
